@@ -1,0 +1,18 @@
+{
+  "name": "moe-vod",
+  "version": "0.1.0",
+  "description": "Vod system.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "VOD"
+  ],
+  "author": "Quincy Huang",
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "express": "^4.15.3",
+    "request": "^2.81.0"
+  }
+}
