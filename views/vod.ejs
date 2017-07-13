@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="/static/css/bootstrap-theme.min.css">
 </head>
 <body>
-    <div class="jumbotron vertical-center">
-        <div class="container">
+    <div class="container">
+        <div class="jumbotron vertical-center">
             <h1><%= title %></h1>
             <video id="my-video" class="video-js" controls preload="auto" data-setup="{}">
                 <source src="<%= sourceMP4 %>" type='video/mp4'>
@@ -16,8 +16,8 @@
                 <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                 </p>
             </video>
+            <a class="btn btn-default" href="<%= sourceMP4 %>" role="button">Download</a>
         </div>
-        <a class="btn btn-default" href="<%= sourceMP4 %>" role="button">Download</a>
     </div>
 
     <script src="/static/video-js/video.js"></script>
