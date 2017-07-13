@@ -28,7 +28,7 @@ module.exports = function(app) {
     })
 
     app.get('/vod', (req, res) => {
-        var sourceMP4 = req.query.d
+        var sourceMP4 = req.query.d.substring(3)
         var title = path.basename(sourceMP4, path.extname(sourceMP4))
         res.render('vod', {
             'title': title,
