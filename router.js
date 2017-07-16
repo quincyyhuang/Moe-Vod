@@ -5,7 +5,7 @@ var fs = require('fs')
 
 //Data
 const videoExt = ['.mp4', '.rmvb']
-const filterString = ['台', '裸聊', '美女']
+const filterString = ['台', '裸聊', '美女', 'UU23', '.net']
 const userCollection = {
     'quincy': 'quincyhuang'
 }
@@ -65,6 +65,13 @@ module.exports = function(app) {
                 'alert': 'invalidSession'
             })
         }
+    })
+
+    app.get('/logout', (req, res) => {
+        req.session.destroy((err) => {
+            if (err) console.log(err)
+            res.redirect('/')
+        })
     })
 }
 
