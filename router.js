@@ -69,8 +69,13 @@ module.exports = function(app) {
     })
 
     app.get('/logout', (req, res) => {
-        req.session.destroy((err) => {
-            if (err) console.log(err)
+        // req.session.destroy((err) => {
+        //     if (err) console.log(err)
+        //     res.redirect('/')
+        // })
+        req.session.regenerate((err) => {
+            // will have a new session here
+            req.session.login = false
             res.redirect('/')
         })
     })
