@@ -9,11 +9,12 @@
     <div class="container">
         <div class="page-header">
             <h1><%= title %></h1>
+            <a class="btn btn-default" href="/list" role="button">List</a>
             <a class="btn btn-default" href="<%= sourceMP4 %>" role="button">Download</a>
             <a class="btn btn-default" href="/logout" role="button">Logout</a>
         </div>
 
-        <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
+        <video id="my-video" class="video-js vjs-big-play-centered" width="800" height="450" controls preload="auto" data-setup="{}">
             <source src="<%= sourceMP4 %>" type='video/mp4'>
             <p class="vjs-no-js">
             To view this video please enable JavaScript, and consider upgrading to a web browser that

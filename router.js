@@ -7,7 +7,8 @@ var fs = require('fs')
 const videoExt = ['.mp4', '.rmvb']
 const filterString = ['台', '裸聊', '美女', 'UU23', '.net']
 const userCollection = {
-    'quincy': 'quincyhuang'
+    'quincy': 'quincyhuang',
+    'wjw': 'wangjiewen'
 }
 var videoList = []
 
