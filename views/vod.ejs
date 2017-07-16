@@ -7,18 +7,20 @@
 </head>
 <body>
     <div class="container">
-        <div class="jumbotron vertical-center">
+        <div class="page-header">
             <h1><%= title %></h1>
-            <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
-                <source src="<%= sourceMP4 %>" type='video/mp4'>
-                <p class="vjs-no-js">
-                To view this video please enable JavaScript, and consider upgrading to a web browser that
-                <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                </p>
-            </video>
-            
             <a class="btn btn-default" href="<%= sourceMP4 %>" role="button">Download</a>
+            <a class="btn btn-default" href="/logout" role="button">Logout</a>
         </div>
+
+        <video id="my-video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup="{}">
+            <source src="<%= sourceMP4 %>" type='video/mp4'>
+            <p class="vjs-no-js">
+            To view this video please enable JavaScript, and consider upgrading to a web browser that
+            <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            </p>
+        </video>
+
     </div>
 
     <script src="/static/video-js/video.js"></script>
