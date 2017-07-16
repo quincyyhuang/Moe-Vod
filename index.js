@@ -27,7 +27,7 @@ app.use(session({
     store: new FileStore,
 	secret: 'sukebei',
 	resave: true,
-    saveUninitialized: true
+    saveUninitialized: false
 }));
 
 //Router
