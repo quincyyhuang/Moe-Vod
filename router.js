@@ -22,7 +22,7 @@ module.exports = function(app) {
     app.post('/login', (req, res) => {
         var u = req.body.username
         var p = req.body.password
-        if (p == userCollection.u) {
+        if (p == userCollection[u]) {
             // OK
             req.session.login = true
             res.redirect('/list')
