@@ -6,17 +6,49 @@
 </head>
 <body>
     <div class="container">
-        <table class="table table-bordered">
-            <caption>All <%= video.length %> videos. <a class="btn btn-default" href="/logout" role="button">Logout</a></caption>
-            <thead>
-                <tr><th>Name</th><th>Link</th></tr>
-            </thead>
-            <tbody>
-                <% for(var i = 0; i < video.length; i++) { %>
-                    <tr><td><%= name[i] %></td><td><a href='/vod?d=<%= video[i] %>'>Watch</a></td></tr>
-                <% } %>
-            </tbody>
-        </table>
+        <div class="row" style="margin-top: 20px;">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Current working directory: <b><%= cwd %></b> <a class="btn btn-danger" href="/logout" role="button">Logout</a> <a class="btn btn-success" href="/list" role="button">Root</a></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Directories - <%= info.directories.length %></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <% info.directories.forEach((d) => { %>
+                                    <div class="col-xs-6 col-md-3">
+                                        <a href="?p=<%= d %>" class="thumbnail" target="_blank">
+                                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true" style="font-size: 25px"> <%= path.basename(d) %></span>
+                                        </a>  
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Files - <%= info.files.length %></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <% info.files.forEach((d) => { %>
+                                    <div class="col-xs-6 col-md-3">
+                                        <a href="/file?p=<%= d %>&token=<%= token %>" class="thumbnail" target="_blank">
+                                            <span class="glyphicon glyphicon-file" aria-hidden="true" style="font-size: 25px"> <%= path.basename(d) %></span>
+                                        </a>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
     <script src="/static/js/jquery-3.2.1.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
