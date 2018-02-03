@@ -9,7 +9,7 @@ const NodeCache = require("node-cache")
 const userCollection = {
     'quincy': 'quincyhuang123!'
 }
-const fileRoot = '/root/files'
+const fileRoot = __dirname
 const videoExt = ['.mp4']
 var myCache = new NodeCache()
 

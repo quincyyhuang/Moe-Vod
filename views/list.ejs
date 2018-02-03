@@ -19,10 +19,11 @@
                         <div class="panel-body">
                             <div class="row">
                                 <% info.directories.forEach((d) => { %>
-                                    <div class="col-xs-6 col-md-3">
-                                        <a href="?p=<%= d %>" class="thumbnail" target="_blank">
-                                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true" style="font-size: 25px"> <%= path.basename(d) %></span>
-                                        </a>  
+                                    <div class="col-xs-4 col-md-2">
+                                        <a href="?p=<%= d %>" target="_blank" class="thumbnail" style="word-wrap: break-word;">
+                                            <span class="glyphicon glyphicon-folder-open" aria-hidden="true" style="font-size: 25px;"></span>
+                                            <p style="font-size: 20px;"><%= path.basename(d) %></p>
+                                        </a>
                                     </div>
                                 <% }) %>
                             </div>
@@ -36,9 +37,10 @@
                         <div class="panel-body">
                             <div class="row">
                                 <% info.files.forEach((d) => { %>
-                                    <div class="col-xs-6 col-md-3">
-                                        <a href="/file?p=<%= d %>&token=<%= token %>" class="thumbnail" target="_blank">
-                                            <span class="glyphicon glyphicon-file" aria-hidden="true" style="font-size: 25px"> <%= path.basename(d) %></span>
+                                    <div class="col-xs-4 col-md-2">
+                                        <a href="/file?p=<%= d %>&token=<%= token %>" target="_blank" class="thumbnail" style="word-wrap: break-word;">
+                                            <span class="glyphicon glyphicon-file" aria-hidden="true" style="font-size: 25px;"></span>
+                                            <p style="font-size: 20px;"><%= path.basename(d) %></p>
                                         </a>
                                     </div>
                                 <% }) %>
