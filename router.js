@@ -65,16 +65,21 @@ router.get('/list', (req, res) => {
 
 router.get('/file', (req, res) => {
     var file = req.query.p
+    var action = req.query.action
     if (!file) res.redirect('/list')
     else {
         if (videoExt.includes(path.extname(file))) {
             if (req.session.login) {
-                var sourceMP4 = file
-                var title = path.basename(sourceMP4, path.extname(sourceMP4))
-                res.render('vod', {
-                    'title': title,
-                    'sourceMP4': sourceMP4
-                })
+                if (action == 'play') {
+                    res.sendFile(file)
+                } else {
+                    var sourceMP4 = '/file?p=' + file + '&action=play'
+                    var title = path.basename(sourceMP4, path.extname(sourceMP4))
+                    res.render('vod', {
+                        'title': title,
+                        'sourceMP4': sourceMP4
+                    })
+                }
             } else {
                 res.render('index', {
                     'alert': 'invalidSession'
@@ -82,7 +87,7 @@ router.get('/file', (req, res) => {
             }
         } else {
             if (req.session.login || req.query.token == myCache.get('token')) res.download(file)
-            else res.status(403).end()
+            else res.sendStatus(403)
         }
     }
 })
