@@ -52,7 +52,10 @@ router.get('/logout', (req, res) => {
 
 router.get('/list', (req, res) => {
     var cwd = req.query.p || fileRoot
-    var token = generateToken()
+    var token = myCache.get('token')
+    if (!token) {
+        token = generateToken()
+    }
     myCache.set('token', token, 3600)
     var info = getCWDInfo(cwd)
     res.render('list', {
