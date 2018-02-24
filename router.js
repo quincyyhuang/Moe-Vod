@@ -75,15 +75,12 @@ router.get('/list', (req, res) => {
 router.get('/file', (req, res) => {
     var file = req.query.p
     var action = req.query.action
-    if (!file) res.redirect('/list')
+    if (!file) return res.redirect('/list')
     else {
         if (videoExt.includes(path.extname(file))) {
             if (req.session.login) {
                 if (action == 'play') {
                     return res.sendFile(file)
-                }
-                else if (action == 'download') {
-                    if (req.session.login || req.query.token == myCache.get('token')) return res.download(file)
                 }
                 else {
                     var token = myCache.get('token')
@@ -102,7 +99,11 @@ router.get('/file', (req, res) => {
                         'downloadMP4': downloadMP4
                     })
                 }
-            } else {
+            }
+            else if (action == 'download') {
+                if (req.session.login || req.query.token == myCache.get('token')) return res.download(file)
+            } 
+            else {
                 return res.redirect('/')
             }
         } else {
