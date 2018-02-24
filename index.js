@@ -10,7 +10,7 @@ var app = express()
 
 //Settings
 app.set('port', (process.env.PORT || 1234))
-app.set('view engine', 'ejs')
+app.set('view engine', 'pug')
 app.use('/static', express.static(__dirname + '/static'))
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'))
@@ -22,10 +22,13 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // Use the session middleware
 app.use(session({
-    store: new FileStore,
+    store: new FileStore({
+		logFn: () => {},
+		ttl: 5*60*60
+	}),
 	secret: 'quincyhuang',
 	resave: true,
-    saveUninitialized: false
+	saveUninitialized: false
 }))
 
 //Router

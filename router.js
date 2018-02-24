@@ -3,13 +3,18 @@ const url = require('url')
 const path = require('path')
 var fs = require('fs')
 var express = require('express')
-const NodeCache = require("node-cache")
+const NodeCache = require('node-cache')
 
 // Data
-const userCollection = {
-    'quincy': 'quincyhuang123!'
+try {
+    var config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'))
+} catch(e) {
+    console.log('Bad config file.')
+    process.exit()
 }
-const fileRoot = '/root/files'
+const fileRoot = config.path || __dirname
+const userCollection = config.userCollection
+
 const videoExt = ['.mp4']
 var myCache = new NodeCache()
 
@@ -18,6 +23,7 @@ var router = express.Router()
 
 // Routes
 router.get('/', (req, res) => {
+    if (req.session.login == true) return res.redirect('/list')
     res.render('index', {
         'alert': false
     })
@@ -29,36 +35,36 @@ router.post('/login', (req, res) => {
     if (p == userCollection[u]) {
         // OK
         req.session.login = true
-        res.redirect('/list')
+        return res.sendStatus(200)
     } else {
         req.session.login = false
-        res.render('index', {
-            'alert': 'invalidCertification'
-        })
+        return res.sendStatus(400)
     }
 })
 
 router.get('/logout', (req, res) => {
-    // req.session.destroy((err) => {
-    //     if (err) console.log(err)
+    if (req.session.login != true) return res.redirect('/')
+    req.session.destroy((err) => {
+        if (err) console.log(err)
+        return res.redirect('/')
+    })
+    // req.session.regenerate((err) => {
+    //     // will have a new session here
+    //     req.session.login = false
     //     res.redirect('/')
     // })
-    req.session.regenerate((err) => {
-        // will have a new session here
-        req.session.login = false
-        res.redirect('/')
-    })
 })
 
 router.get('/list', (req, res) => {
+    if (req.session.login != true) return res.redirect('/')
     var cwd = req.query.p || fileRoot
     var token = myCache.get('token')
     if (!token) {
         token = generateToken()
     }
-    myCache.set('token', token, 3600)
+    myCache.set('token', token, 5*60*60)
     var info = getCWDInfo(cwd)
-    res.render('list', {
+    return res.render('list', {
         path: path,
         token: token,
         cwd: cwd,
@@ -67,6 +73,7 @@ router.get('/list', (req, res) => {
 })
 
 router.get('/file', (req, res) => {
+    if (req.session.login != true) return res.redirect('/')
     var file = req.query.p
     var action = req.query.action
     if (!file) res.redirect('/list')
@@ -74,23 +81,34 @@ router.get('/file', (req, res) => {
         if (videoExt.includes(path.extname(file))) {
             if (req.session.login) {
                 if (action == 'play') {
-                    res.sendFile(file)
-                } else {
+                    return res.sendFile(file)
+                }
+                else if (action == 'download') {
+                    if (req.session.login || req.query.token == myCache.get('token')) return res.download(file)
+                }
+                else {
+                    var token = myCache.get('token')
+                    if (!token) {
+                        token = generateToken()
+                    }
+                    myCache.set('token', token, 5*60*60)
                     var sourceMP4 = '/file?p=' + file + '&action=play'
+                    sourceMP4 = sourceMP4.replace(/\\/g, '\\\\')
+                    var downloadMP4 = '/file?p=' + file + '&action=download' + '&token=' + token
+                    downloadMP4 = downloadMP4.replace(/\\/g, '\\\\')
                     var title = path.basename(sourceMP4, path.extname(sourceMP4))
-                    res.render('vod', {
+                    return res.render('vod', {
                         'title': title,
-                        'sourceMP4': sourceMP4
+                        'sourceMP4': sourceMP4,
+                        'downloadMP4': downloadMP4
                     })
                 }
             } else {
-                res.render('index', {
-                    'alert': 'invalidSession'
-                })
+                return res.redirect('/')
             }
         } else {
-            if (req.session.login || req.query.token == myCache.get('token')) res.download(file)
-            else res.sendStatus(403)
+            if (req.session.login || req.query.token == myCache.get('token')) return res.download(file)
+            else return res.sendStatus(403)
         }
     }
 })
