@@ -42,7 +42,7 @@ html
 								i.material-icons.left ondemand_video
 								| #{path.basename(file)}
 						else
-							a.collection-item(href="/file?p=" + file, target="_blank")
+							a.collection-item(href="/file?p=" + file + "&token=" + token, target="_blank")
 								i.material-icons.left insert_drive_file
 								| #{path.basename(file)}
 		script(src="/static/js/jquery-3.2.1.min.js", type="text/javascript")
