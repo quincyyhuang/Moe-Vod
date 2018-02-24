@@ -73,7 +73,6 @@ router.get('/list', (req, res) => {
 })
 
 router.get('/file', (req, res) => {
-    if (req.session.login != true) return res.redirect('/')
     var file = req.query.p
     var action = req.query.action
     if (!file) res.redirect('/list')
