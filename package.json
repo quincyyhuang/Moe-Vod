@@ -1,6 +1,6 @@
 {
   "name": "moe-vod",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "File and Vod system.",
   "main": "index.js",
   "scripts": {
