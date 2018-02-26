@@ -37,13 +37,20 @@ html
 				h4.header Files - #{info.files.length}
 				.collection
 					each file in info.files
-						if path.extname(file) == '.mp4'
-							a.collection-item(href="/file?p=" + file, target="_blank")
-								i.material-icons.left ondemand_video
-								| #{path.basename(file)}
+						if file.path
+							li.collection-item
+								div
+									a(href="/file?p=" + file.path, target="_blank")
+										i.material-icons.left ondemand_video
+										| #{path.basename(file.path)}
+									a.secondary-content(href=file.downloadPath)
+										i.material-icons.right file_download
+									a.secondary-content(href="/file?p=" + file.path, target="_blank")
+										i.material-icons.right play_circle_outline
 						else
 							a.collection-item(href="/file?p=" + file + "&token=" + token, target="_blank")
 								i.material-icons.left insert_drive_file
 								| #{path.basename(file)}
+								i.material-icons.right file_download
 		script(src="/static/js/jquery-3.2.1.min.js", type="text/javascript")
 		script(src="/static/js/materialize.min.js", type="text/javascript")
