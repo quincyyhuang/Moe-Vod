@@ -78,6 +78,9 @@ router.get('/file', (req, res) => {
     if (!file) return res.redirect('/list')
     else {
         if (videoExt.includes(path.extname(file))) {
+            if (action == 'download') {
+                if (req.session.login || req.query.token == myCache.get('token')) return res.download(file)
+            }
             if (req.session.login) {
                 if (action == 'play') {
                     return res.sendFile(file)
@@ -100,9 +103,6 @@ router.get('/file', (req, res) => {
                     })
                 }
             }
-            else if (action == 'download') {
-                if (req.session.login || req.query.token == myCache.get('token')) return res.download(file)
-            } 
             else {
                 return res.redirect('/')
             }
@@ -118,11 +118,25 @@ function getCWDInfo(cwd) {
         directories: [],
         files: []
     }
+    var token = myCache.get('token')
+    if (!token) {
+        token = generateToken()
+    }
+    myCache.set('token', token, 5*60*60)
     var items = fs.readdirSync(cwd)
     items.forEach((i) => {
         var abs = path.join(cwd, i)
         if (fs.statSync(abs).isDirectory()) info.directories.push(abs)
-        else if (fs.statSync(abs).isFile()) info.files.push(abs)
+        else if (fs.statSync(abs).isFile()) {
+            if (path.extname(abs) == '.mp4') {
+                var downloadPath = '/file?p=' + abs + '&action=download' + '&token=' + token
+                info.files.push({
+                    path: abs,
+                    downloadPath: downloadPath
+                })
+            }
+            else info.files.push(abs)
+        }
     })
     return info
 }
