@@ -1,52 +1,56 @@
 doctype html
 html
-	head
-		title Playing - #{title}
-		<!--Import Google Icon Font-->
-		link(rel="stylesheet", href="/static/css/icon.css")
-		<!--Import materialize.css-->
-		link(rel="stylesheet", href="/static/css/materialize.min.css", media="screen, projection")
-		<!--Let browser know website is optimized for mobile-->
-		meta(name="viewport", content="width=device-width, initial-scale=1.0")
-		style.
-			.header {
-				color: #ee6e73;
-				font-weight: 200;
-			}
+  head
+    title Playing - #{title}
+    <!--Import Google Icon Font-->
+    link(rel="stylesheet", href="/static/css/icon.css")
+    <!--Import materialize.css-->
+    link(rel="stylesheet", href="/static/css/materialize.min.css", media="screen, projection")
+    <link rel="stylesheet" href="/static/plyr/plyr.css">
+    <!--Let browser know website is optimized for mobile-->
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    style.
+      .header {
+        color: #ee6e73;
+        font-weight: 200;
+      }
 
-			#video {
-				height: 70vh;
-			}
-	body
-		.container
-			.row
-				h3.header #{title}
-			.row
-				a.btn.red.lighten-1(href="/list")
-					i.material-icons.left home
-					| Root
-				| 
-				a.btn.red.darken-1(href=downloadMP4)
-					i.material-icons.left file_download
-					| Download
-				| 
-				a.btn.red.darken-3(href="/logout")
-					i.material-icons.left exit_to_app
-					| Logout
-			.row
-				.col.s12#video
-		script(src="/static/js/jquery-3.2.1.min.js", type="text/javascript")
-		script(src="/static/js/materialize.min.js", type="text/javascript")
-		script(src="/static/ckplayer/ckplayer.js", type="text/javascript")
-		script.
-			var videoObject = {
-				container: '#video',
-				variable: 'player',
-				flashplayer: false,
-				volume: 1.0,
-				video: {
-					file: '!{sourceMP4}',
-					type:'video/mp4'
-				}
-			}
-			var player = new ckplayer(videoObject)
+      #video {
+        height: 70vh;
+      }
+  body
+    .container
+      .row
+        h3.header #{title}
+      .row
+        a.btn.red.lighten-1(href="/list")
+          i.material-icons.left home
+          | Root
+        | 
+        a.btn.red.darken-1(href=downloadMP4)
+          i.material-icons.left file_download
+          | Download
+        | 
+        a.btn.red.darken-3(href="/logout")
+          i.material-icons.left exit_to_app
+          | Logout
+      .row
+        .col.s12
+          video#player
+    script(src="/static/js/jquery-3.2.1.min.js", type="text/javascript")
+    script(src="/static/js/materialize.min.js", type="text/javascript")
+    script(src="/static/plyr/plyr.js", type="text/javascript")
+    script.
+      const player = new Plyr('#player', {
+        blankUrl: '/static/plyr/blank.mp4',
+        debug: true
+      });
+      player.source = {
+        type: 'video',
+        sources: [
+          {
+            src: '!{sourceMP4}',
+            type: 'video/mp4'
+          }
+        ]
+      };
