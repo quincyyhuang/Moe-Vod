@@ -62,7 +62,7 @@ router.get('/list', (req, res) => {
     if (!token) {
         token = generateToken()
     }
-    myCache.set('token', token, 5*60*60)
+    myCache.set('token', token, 10*60*60)
     var info = getCWDInfo(cwd)
     return res.render('list', {
         path: path,
@@ -90,7 +90,7 @@ router.get('/file', (req, res) => {
                     if (!token) {
                         token = generateToken()
                     }
-                    myCache.set('token', token, 5*60*60)
+                    myCache.set('token', token, 10*60*60)
                     var sourceMP4 = '/file?p=' + file + '&action=play'
                     sourceMP4 = sourceMP4.replace(/\\/g, '\\\\')
                     var downloadMP4 = '/file?p=' + file + '&action=download' + '&token=' + token
@@ -113,6 +113,64 @@ router.get('/file', (req, res) => {
     }
 })
 
+// Client API
+router.post('/api/getToken', (req, res) => {
+    var u = req.body.username
+    var p = req.body.password
+    if (p == userCollection[u]) {
+        // OK
+        var token = myCache.get('token')
+        if (!token) {
+            token = generateToken()
+        }
+        myCache.set('token', token, 10*60*60)
+        return res.json({
+            status: 200,
+            token: token
+        })
+    } else {
+        return res.json({
+            status: 403,
+            message: 'Bad password.'
+        })
+    }
+})
+
+router.post('/api/list', (req, res) => {
+    var t = req.body.token
+    var p = req.body.path
+    let token = myCache.get('token')
+    if (!token || t != token) {
+        return res.json({
+            status: 403,
+            message: 'Bad token.'
+        })
+    }
+    var cwd = p || fileRoot
+    var info = getCWDInfo(cwd)
+    return res.json({
+        status: 200,
+        info: info
+    })
+})
+
+router.post('/api/play', (req, res) => {
+    var t = req.body.token
+    var p = req.body.path
+    let token = myCache.get('token')
+    if (!token || t != token) {
+        return res.json({
+            status: 403,
+            message: 'Bad token.'
+        })
+    }
+    if (!p) return res.json({
+        status: 400,
+        message: 'Bad request. File name missing.'
+    })
+    return res.sendFile(p)
+})
+
 function getCWDInfo(cwd) {
     var info = {
         directories: [],
@@ -122,7 +180,7 @@ function getCWDInfo(cwd) {
     if (!token) {
         token = generateToken()
     }
-    myCache.set('token', token, 5*60*60)
+    myCache.set('token', token, 10*60*60)
     var items = fs.readdirSync(cwd)
     items.forEach((i) => {
         var abs = path.join(cwd, i)
