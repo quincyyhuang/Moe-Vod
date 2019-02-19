@@ -126,7 +126,8 @@ router.post('/api/getToken', (req, res) => {
         myCache.set('token', token, 10*60*60)
         return res.json({
             status: 200,
-            token: token
+            token: token,
+            fileRoot: fileRoot
         })
     } else {
         return res.json({
