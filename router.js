@@ -91,11 +91,11 @@ router.get('/file', (req, res) => {
                         token = generateToken()
                     }
                     myCache.set('token', token, 10*60*60)
-                    var sourceMP4 = '/file?p=' + file + '&action=play'
+                    var sourceMP4 = '/file?p=' + encodeURIComponent(file) + '&action=play'
                     sourceMP4 = sourceMP4.replace(/\\/g, '\\\\')
-                    var downloadMP4 = '/file?p=' + file + '&action=download' + '&token=' + token
+                    var downloadMP4 = '/file?p=' + encodeURIComponent(file) + '&action=download' + '&token=' + token
                     downloadMP4 = downloadMP4.replace(/\\/g, '\\\\')
-                    var title = path.basename(sourceMP4, path.extname(sourceMP4))
+                    var title = path.basename(file, path.extname(file))
                     return res.render('vod', {
                         'title': title,
                         'sourceMP4': sourceMP4,

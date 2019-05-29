@@ -30,7 +30,7 @@ html
 				h4.header Directories - #{info.directories.length}
 				.collection
 					each directory in info.directories
-						a.collection-item(href="?p=" + directory, target="_blank")
+						a.collection-item(href="?p=" + encodeURIComponent(directory), target="_blank")
 							i.material-icons.left folder
 							| #{path.basename(directory)}
 			.row
@@ -40,15 +40,15 @@ html
 						if file.path
 							li.collection-item
 								div
-									a(href="/file?p=" + file.path, target="_blank")
+									a(href="/file?p=" + encodeURIComponent(file.path), target="_blank")
 										i.material-icons.left ondemand_video
 										| #{path.basename(file.path)}
-									a.secondary-content(href=file.downloadPath)
+									a.secondary-content(href=encodeURIComponent(file.downloadPath))
 										i.material-icons.right file_download
-									a.secondary-content(href="/file?p=" + file.path, target="_blank")
+									a.secondary-content(href="/file?p=" + encodeURIComponent(file.path), target="_blank")
 										i.material-icons.right play_circle_outline
 						else
-							a.collection-item(href="/file?p=" + file + "&token=" + token, target="_blank")
+							a.collection-item(href="/file?p=" + encodeURIComponent(file) + "&token=" + token, target="_blank")
 								i.material-icons.left insert_drive_file
 								| #{path.basename(file)}
 								i.material-icons.right file_download
